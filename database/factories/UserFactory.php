@@ -21,3 +21,23 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Empleado::class, function(Faker $faker) {	
+
+	$departamentos = App\Departamento::all()->pluck('id_departamento')->toArray();
+	$turnos = App\Turno::all()->pluck('id_turno')->toArray();
+
+	
+	return [
+		'matricula' => $faker->unique()->numberBetween($min = 7, $max = 6000),
+		'paterno' => $faker->lastName,
+		'materno' => $faker->lastName,
+		'nombre' => $faker->firstNameMale,
+		'fecha_nacimiento' => $faker->date($format = 'Y/m/d', $max = ''),
+		'sexo' => $faker->randomElement(['HOMBRE' ,'MUJER']),
+		'id_departamento' => $faker->randomElement($departamentos),
+		'id_turno' => $faker->randomElement($turnos),
+	];
+
+});
+
