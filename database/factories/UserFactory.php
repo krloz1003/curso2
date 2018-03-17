@@ -22,10 +22,18 @@ $factory->define(App\User::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Departamento::class, function (Faker $faker) {
+    return [
+	'codigo' => $faker->bothify('?###'),
+    'descripcion' => $faker->sentence(10)
+    ];
+ });
+
+
 $factory->define(App\Empleado::class, function(Faker $faker) {	
 
-	$departamentos = App\Departamento::all()->pluck('id_departamento')->toArray();
-	$turnos = App\Turno::all()->pluck('id_turno')->toArray();
+	$departamentos = App\Departamento::all()->pluck('id')->toArray();
+	$turnos = App\Turno::all()->pluck('id')->toArray();
 
 	
 	return [
