@@ -16,16 +16,16 @@ class Empleado extends Model
     	'fecha_nacimiento',
     	'sexo',
     	'id_departamento',
-    	'id_turno'
+    	'id_turno',
     ];
 
     public function departamento()
     {
-    	return $this->belongsTo('App\Departamento');
+    	return $this->belongsTo('App\Departamento','id');
     }
 
     public function turno()
     {
-    	return $this->belongsTo('App\Turno');
+    	return $this->belongsTo('App\Turno', 'id');
     }
 }

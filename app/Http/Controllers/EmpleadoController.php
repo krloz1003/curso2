@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Empleado;
@@ -16,7 +17,9 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        return view('empleados.index');
+        $empleados = Empleado::paginate(5); 
+        //$empleados = DB::table('empleados')->paginate(3); 
+        return view('empleados.index',['empleados' => $empleados]);
     }
 
     /**
@@ -100,7 +103,15 @@ class EmpleadoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $empleado = Empleado::find($id);
+        $sexos = array('HOMBRE' => 'HOMBRE',
+                        'MUJER' => 'MUJER');
+        $turnos = Turno::all()->pluck('descripcion', 'id');
+        $departamentos = Departamento::all()->pluck('descripcion', 'id');
+
+        //dd($empleado->turno->descripcion);        
+
+        return view('empleados.edit',compact('empleado', 'sexos', 'turnos', 'departamentos'));
     }
 
     /**
@@ -111,8 +122,23 @@ class EmpleadoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {        
+        $empleado = Empleado::find($id);
+
+        $empleado->matricula = $request->input('matricula');
+        $empleado->paterno = $request->input('paterno');
+        $empleado->materno = $request->input('materno');
+        $empleado->nombre = $request->input('nombre');
+        $empleado->fecha_nacimiento = $request->input('fecha_nacimiento');
+        $empleado->sexo = $request->input('sexo');
+        $empleado->id_turno = $request->input('id_turno');
+        $empleado->id_departamento = $request->input('id_departamento');
+
+        
+        $empleado->save();       
+
+        return $this->index();
+
     }
 
     /**
@@ -123,6 +149,10 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $empleado = Empleado::find($id);
+
+        $empleado->delete();
+        
+        return $this->index();
     }
 }
